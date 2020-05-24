@@ -1,0 +1,68 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block titulo %}Crear Tarea{% endblock %}
+{% block contenido %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Crear Tarea</h1>
+</div>
+<div class="container-fluid">
+    {% if alertOk %}
+    <div class="alert alert-primary" role="alert">
+        {{mensaje}}
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">¡Crea tarea!</h1>
+                    </div>
+
+                    <form class="user" action="{% url 'app:tarea' %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="nombre">Nombre</label>
+                            <input type="text" maxlength="45" class="form-control" id="nombre" name="nombre"
+                                placeholder="Nombre" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="descripcion">Descripción</label>
+                            <input type="text" maxlength="45" class="form-control" id="descripcion" name="descripcion"
+                                placeholder="Descripción">
+                        </div>
+                        <div class="form-group">
+                            <label for="proyecto">Proyecto</label>
+                            <select name="proyecto" id="proyecto" class="form-control" required>
+                                <option value="">Seleccione proyecto</option>
+                                {% for p in lista_proyectos %}
+                                <option value="{{p.id}}">{{p.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="developer">Developer</label>
+                            <select name="developer" id="developer" class="form-control" required>
+                                <option value="">Seleccione Developer</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tiempoEstimado">Tiempo estimado</label>
+                            <input type="number" class="form-control" id="tiempoEstimado" name="tiempoEstimado"
+                                placeholder="Tiempo estimado" value="0">
+                        </div>
+
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Crear</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+

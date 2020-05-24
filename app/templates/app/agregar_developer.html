@@ -1,0 +1,57 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block titulo %}Agregar Developer{% endblock %}
+{% block contenido %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Agregar Developer</h1>
+</div>
+<div class="container-fluid">
+    {% if alertOk %}
+    <div class="alert alert-primary" role="alert">
+        {{mensaje}}
+    </div>
+    {% endif %}
+
+    {% if alertError %}
+    <div class="alert alert-danger" role="alert">
+        {{mensaje}}
+    </div>
+    {% endif %}
+
+    <div class="row">
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="p-5">
+                    <div class="text-center">
+                        <h1 class="h4 text-gray-900 mb-4">¡Agregar Developer!</h1>
+                    </div>
+
+                    <form class="user" action="{% url 'app:agrega_developer' %}" method="post">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+                            <label for="proyecto">Proyecto</label>
+                            <select name="proyecto" id="proyecto" class="form-control" required>
+                                {% for p in lista_proyectos %}
+                                <option value="{{p.id}}">{{p.nombre}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="usuario">Usuario</label>
+                            <select name="usuario" id="usuario" class="form-control">
+                                {% for u in lista_usuarios %}
+                                <option value="{{u.id}}">{{u.username}}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Agregar</button>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
