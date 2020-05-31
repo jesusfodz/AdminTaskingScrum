@@ -8,6 +8,7 @@ from app.models import Proyecto,Developer,Estado,Tarea
 from django.core import serializers
 import json
 
+
 	
 @login_required
 def index(request):
@@ -417,6 +418,8 @@ def tarea2(request):
     tarea.proyecto=Proyecto.objects.get( id=idProyecto)
     if idDeveloper:
         tarea.developer=User.objects.get(id=idDeveloper)
+    else:
+        tarea.developer=None 
     # tarea.estadoActual=Estado.objects.get(nombre='To Do')
     tarea.tiempoEstimado=tiempoEstimado
     tarea.save()
