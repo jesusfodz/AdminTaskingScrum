@@ -1,47 +1,37 @@
 {% extends "app/base.html" %}
 {% load static %}
 
-{% block titulo %}Crear Proyecto{% endblock %}
+{% block titulo %}Editar Proyecto{% endblock %}
 {% block contenido %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">Crear Proyecto</h1>
+    <h1 class="h3 mb-0 text-gray-800">Editar Proyecto</h1>
 </div>
 <div class="container-fluid">
-    {% if alertOk %}
-    <div class="alert alert-primary" role="alert">
-        {{mensaje}}
-    </div>
-    {% endif %}
-
-    {% if alertError %}
-    <div class="alert alert-danger" role="alert">
-        {{mensaje}}
-    </div>
-    {% endif %}
-
     <div class="row">
         <div class="col-lg-6 mb-4">
             <div class="card shadow mb-4">
                 <div class="p-5">
                     <div class="text-center">
-                        <h1 class="h4 text-gray-900 mb-4">¡Crea proyecto!</h1>
+                        <h1 class="h4 text-gray-900 mb-4">¡Editar proyecto No. {{proyecto.id}}!</h1>
                     </div>
 
-                    <form class="user" action="{% url 'app:proyecto' %}" method="post">
+                    <form class="user" action="{% url 'app:proyecto2' %}" method="post">
                         {% csrf_token %}
 
+                        <input type="hidden" id="idProyecto" name="idProyecto" value="{{proyecto.id}}"/>
+ 
                         <div class="form-group">
                             <label for="nombre">Nombre</label>
-                            <input type="text" maxlength="45" class="form-control" id="nombre"
-                                name="nombre" placeholder="Nombre" required>
+                            <input type="text" maxlength="45" class="form-control" id="nombre" value="{{proyecto.nombre}}"
+                                name="nombre" placeholder="Nombre"  disabled>
                         </div>
                         <div class="form-group">
                             <label for="descripcion">Descripción</label>
-                            <input type="text" maxlength="45" class="form-control" id="descripcion"
+                            <input type="text" maxlength="45" class="form-control" id="descripcion" value="{{proyecto.descripcion}}"
                                 name="descripcion" placeholder="Descripción">
                         </div>
 
-                        <button class="btn btn-primary btn-user btn-block" type="submit">Crear</button>
+                        <button class="btn btn-primary btn-user btn-block" type="submit">Editar</button>
 
                     </form>
                 </div>

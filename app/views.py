@@ -101,13 +101,64 @@ def form_proyecto(request):
     return render(request, "app/proyecto.html") 
 
 @login_required
+def form_proyecto2(request):
+    idProyecto= request.POST['idProyecto']
+
+    proyecto=Proyecto()
+    
+    if idProyecto:
+        proyecto=Proyecto.objects.get(id=int(idProyecto))
+
+
+    contexto = { 
+        'proyecto': proyecto 
+    } 
+
+    return render(request, "app/editar_proyecto.html",contexto)   
+
+@login_required
 def proyecto(request):
+    mensaje=""
+    alertError=False
+    alertOk=False
 
     nombre=request.POST['nombre']
     descripcion=request.POST['descripcion']
 
-    proyecto=Proyecto()
-    proyecto.nombre=nombre
+    proyecto=Proyecto.objects.filter(nombre=nombre)
+
+    if proyecto:
+        mensaje = "Este nombre ya esta asignado"
+        alertError =True    
+    else:
+        proyecto=Proyecto()
+        proyecto.nombre=nombre
+        proyecto.descripcion=descripcion
+
+        productOwner=User.objects.get(id=request.user.id)
+        proyecto.productOwner=productOwner 
+
+        proyecto.save()
+
+        mensaje="El proyecto fue creado exitosamente"
+        alertOk=True
+
+    contexto = { 
+        'mensaje': mensaje,
+        'alertOk':alertOk,   
+        'alertError':alertError
+    } 
+
+    return render(request, "app/proyecto.html",contexto)     
+
+@login_required
+def proyecto2(request):
+
+    idProyecto= request.POST['idProyecto']
+    descripcion=request.POST['descripcion']
+
+    proyecto=Proyecto.objects.get(id=int(idProyecto))
+
     proyecto.descripcion=descripcion
 
     productOwner=User.objects.get(id=request.user.id)
@@ -115,15 +166,7 @@ def proyecto(request):
 
     proyecto.save()
 
-    mensaje="El proyecto fue creado exitosamente"
-    alertOk=True
-
-    contexto = { 
-        'mensaje': mensaje,
-        'alertOk':alertOk   
-    } 
-
-    return render(request, "app/proyecto.html",contexto)      
+    return redirect("app:list_proyectos_creados")      
 
 @login_required
 def list_proyectos_creados(request):
@@ -249,7 +292,8 @@ def tarea(request):
     tarea.nombre=nombre
     tarea.descripcion=descripcion
     tarea.proyecto=Proyecto.objects.get( id=idProyecto)
-    tarea.developer=User.objects.get(id=idDeveloper)
+    if idDeveloper:
+        tarea.developer=User.objects.get(id=idDeveloper)
     tarea.estadoActual=Estado.objects.get(nombre='To Do')
     tarea.tiempoEstimado=tiempoEstimado
     tarea.save()
@@ -265,3 +309,116 @@ def tarea(request):
 
     return render(request, "app/tarea.html",contexto) 
 
+@login_required
+def list_developer(request):
+
+    productOwner=User.objects.get(id=request.user.id)
+    lista_proyectos=Proyecto.objects.filter( productOwner=productOwner)
+
+    lista_developer=Developer.objects.filter( idProyecto__in=[p.id for p in lista_proyectos])
+       
+    contexto = { 
+        'lista_developer': lista_developer        
+    } 
+
+    return render(request, "app/developer_proyecto.html",contexto)    
+
+@login_required
+def cambio_estado(request):
+    mensaje=""
+    alertOk=False
+
+    productOwner=User.objects.get(id=request.user.id)
+    lista_proyectos=Proyecto.objects.filter( productOwner=productOwner)
+
+    lista_developer=Developer.objects.filter( idProyecto__in=[p.id for p in lista_proyectos])
+
+    idDeveloper= int(request.POST['idDeveloper'])
+    estado=request.POST['estado']
+
+    developer=Developer.objects.get(id=idDeveloper)
+
+    if estado in 'A':
+        developer.activo='I'
+    else:
+        developer.activo='A'  
+
+    developer.save()
+
+    mensaje="El cambio de estado fue exitosamente"
+    alertOk=True 
+
+    contexto = { 
+        'lista_developer': lista_developer,
+        'mensaje': mensaje,
+        'alertOk':alertOk          
+    } 
+
+
+    return render(request, "app/developer_proyecto.html",contexto)
+
+
+@login_required
+def list_tareas_creadas(request):
+
+    productOwner=User.objects.get(id=request.user.id)
+    lista_proyectos=Proyecto.objects.filter( productOwner=productOwner)
+
+    lista_tareas=Tarea.objects.filter( proyecto__in=[p.id for p in lista_proyectos])
+
+    
+    contexto = { 
+        'lista_tareas': lista_tareas         
+    } 
+
+    return render(request, "app/tareas_creadas.html",contexto)  
+
+@login_required
+def form_tarea2(request):
+
+    idTarea= request.POST['idTarea']
+
+    tarea=Tarea()
+    
+    if idTarea:
+        tarea=Tarea.objects.get(id=int(idTarea))
+
+
+    productOwner=User.objects.get(id=request.user.id)
+    lista_proyectos=Proyecto.objects.filter( productOwner=productOwner)
+    
+    contexto = { 
+        'lista_proyectos': lista_proyectos, 
+        'tarea' :tarea 
+    } 
+
+    return render(request, "app/editar_tarea.html",contexto)  
+
+@login_required
+def tarea2(request):
+    
+    idTarea= request.POST['idTarea']
+    descripcion=request.POST['descripcion']
+    idProyecto=request.POST['proyecto']
+    idDeveloper=request.POST['developer']
+    tiempoEstimado=request.POST['tiempoEstimado']
+
+    productOwner=User.objects.get(id=request.user.id)
+  
+    # estado=Estado.objects.get(nombre='To Do')
+
+    # if not estado:
+    #     estado=Estado()
+    #     estado.nombre="To Do"
+    #     estado.save()
+
+    tarea=Tarea.objects.get(id=int(idTarea))
+    tarea.descripcion=descripcion
+    tarea.proyecto=Proyecto.objects.get( id=idProyecto)
+    if idDeveloper:
+        tarea.developer=User.objects.get(id=idDeveloper)
+    # tarea.estadoActual=Estado.objects.get(nombre='To Do')
+    tarea.tiempoEstimado=tiempoEstimado
+    tarea.save()
+
+    return redirect("app:list_tareas_creadas") 

@@ -69,7 +69,7 @@
                         <a class="collapse-item" href="{% url 'app:form_proyecto' %}">Crear proyecto</a>
                         <a class="collapse-item" href="{% url 'app:list_proyectos_creados' %}">Ver proyectos creados</a>
                         <a class="collapse-item" href="{% url 'app:form_agregar_developer' %}">Agregar developer a un Proyecto</a>                        
-                        <a class="collapse-item" href="#">Ver proyectos asignados</a>
+                        <a class="collapse-item" href="{% url 'app:list_developer' %}">Habilitar/Desabilitar Developer</a>
                     </div>
                 </div>
             </li>
@@ -86,7 +86,7 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Tareas:</h6>
                         <a class="collapse-item" href="{% url 'app:form_tarea' %}">Crear tarea</a>
-                        <a class="collapse-item" href="utilities-border.html">Ver tarea creadas</a>
+                        <a class="collapse-item" href="{% url 'app:list_tareas_creadas' %}">Ver tarea creadas</a>
                         <a class="collapse-item" href="utilities-animation.html">Ver tareas asignadas</a>
                     </div>
                 </div>

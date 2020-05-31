@@ -1,0 +1,70 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block titulo %}Developer {% endblock %}
+{% block contenido %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Habilitar/Desabilitar Developer</h1>
+</div>
+
+<div class="container-fluid">
+    {% if alertOk %}
+    <div class="alert alert-primary" role="alert">
+        {{mensaje}}
+    </div>
+    {% endif %}
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nombre del proyecto</th>
+                            <th>Nombre del developer</th>
+                            <th>Estado</th>
+                            <th>Cambiar Estado</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Nombre del proyecto</th>
+                            <th>Nombre del developer</th>
+                            <th>Estado</th>
+                            <th>Cambiar Estado</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for developer in lista_developer %}
+                        <tr>
+                            <td>{{ developer.idProyecto }}</td>
+                            <td>{{ developer.idUser }}</td>
+                            <td align="center">{% if developer.activo in 'A'  %}
+                                <div class="fas fa-check"></div>
+                                {% else %}
+                                <div class="fas fa-times"></div>
+                                {% endif %}
+                            </td>
+                            <td>
+                                <form class="user" action="{% url 'app:cambio_estado' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" id="idDeveloper" name="idDeveloper" value="{{developer.id}}">
+                                    <input type="hidden" id="estado" name="estado" value="{{developer.activo}}">
+                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i class="fas fa-edit"></i>
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends "app/base.html" %}
+{% load static %}
+
+{% block titulo %}Tareas creadas{% endblock %}
+{% block contenido %}
+<div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">tareas creadas</h1>
+</div>
+
+<div class="container-fluid">
+    <div class="card shadow mb-4">
+
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Developer asignado</th>
+                            <th>Proyecto</th>
+                            <th>Estado Actual</th>
+                            <th>Tiempo Estimado</th>
+                            <th>Fecha de Creación</th>
+                            <th>Avances</th>
+                            <th>Editar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Descripción</th>
+                            <th>Developer asignado</th>
+                            <th>Proyecto</th>
+                            <th>Estado Actual</th>
+                            <th>Tiempo Estimado</th>
+                            <th>Fecha de Creación</th>
+                            <th>Avances</th>
+                            <th>Editar</th>
+                            <th>Borrar</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        {% for tarea in lista_tareas %} 
+                        <tr>
+                            <td>{{ tarea.nombre }}</td>
+                            <td>{{ tarea.descripcion }}</td>
+                            <td>{{ tarea.developer }}</td>
+                            <td>{{ tarea.proyecto }}</td>
+                            <td>{{ tarea.estadoActual }}</td>
+                            <td>{{ tarea.tiempoEstimado }}</td>
+                            <td>{{ tarea.fechaCreacion }}</td>
+                            <td>
+                                <form class="user" action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}">
+                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i class="fas fa-info-circle"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form class="user" action="{% url 'app:form_tarea2' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}">
+                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i class="fas fa-edit"></i>
+                                    </button>
+                                </form>
+                            </td>
+                            <td>
+                                <form class="user" action="" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}">
+                                    <button class="btn btn-danger btn-circle btn-lg" type="submit"><i class="fas fa-trash"></i>
+                                        </button>
+                                </form>
+                            </td>
+
+                        </tr>
+                        {% endfor %} 
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+{% endblock %}
