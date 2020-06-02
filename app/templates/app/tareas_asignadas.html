@@ -60,8 +60,7 @@
                                     </h6>
                                     {% for avance in avances %}
                                     {% if avance.tarea_id == tarea.id %}
-                                    <a class="dropdown-item d-flex align-items-center"
-                                        href="{% url 'app:form_avance_tarea_id' tarea.id%}">
+                                    <div class="dropdown-item d-flex align-items-center">
                                         <div>
                                             <div class="small text-gray-500">{{avance.fecha}}</div>
                                             <span class="font-weight-bold">{{avance.descripcion}}</span><br>
@@ -69,7 +68,7 @@
                                             Tiempo trabajado: <span>{{avance.tiempoTrabajado}}</span><br>
                                             Tiempo restante: <span>{{avance.tiempoRestante}}</span>
                                         </div>
-                                    </a>
+                                    </div>
                                     {%endif%}
                                     {% endfor %}
                                 </div>
