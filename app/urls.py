@@ -28,4 +28,5 @@ urlpatterns = [
     path('list-tareas-asignadas/', views.list_tareas_asignadas, name='list_tareas_asignadas'),
     path('cambiar-estado/', views.cambiar_estado, name='cambiar_estado'),
     path('registrar-avance/', views.form_avance, name='form_avance'),
+    path('registro-avance/', views.avance, name='avance'),
 ]

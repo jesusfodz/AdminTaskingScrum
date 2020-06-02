@@ -4,7 +4,7 @@ from django.contrib.auth import logout,authenticate,login
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
-from app.models import Proyecto,Developer,Estado,Tarea
+from app.models import Proyecto,Developer,Estado,Tarea,Avance
 from django.core import serializers
 import json
 
@@ -484,8 +484,39 @@ def form_avance(request):
     idTarea= request.POST['idTareaAvance']
     tarea=Tarea.objects.get(id=int(idTarea))
 
+    avance=Avance.objects.filter(tarea_id=int(idTarea))
+
     contexto = { 
-        'tarea': tarea      
+        'tarea': tarea,
+        'avances':avance       
     }
 
     return render(request, "app/avance_tarea.html",contexto) 
+
+@login_required
+def avance(request):
+    idTarea= request.POST['idTareaAvance']
+    descripcion= request.POST['descripcion']
+    tiempoTrabajado= request.POST['tiempoTrabajado']
+    tiempoRestante= request.POST['tiempoRestante']
+    idAvance= request.POST['idAvance']
+
+    tarea=Tarea.objects.get(id=int(idTarea))
+    developer=User.objects.get(id=request.user.id)
+
+    if idAvance:
+        avance=Avance.objects.get(id=int(idAvance))
+    else:
+        avance=Avance()
+
+    if descripcion:
+        avance.descripcion=descripcion
+
+    avance.tarea=tarea
+    avance.usuario=developer
+    avance.tiempoTrabajado=tiempoTrabajado
+    avance.tiempoRestante=tiempoRestante
+
+    avance.save()
+
+    return redirect("app:list_tareas_asignadas")    

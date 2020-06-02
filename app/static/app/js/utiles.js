@@ -1,9 +1,22 @@
-function gestionTiempo() {
-    var tiempoT = $('#tiempoTrabajado').val();
-    var tiempoE = $('#tiempoEstimado').val();
+function anular(e) {
+    tecla = (document.all) ? e.keyCode : e.which;
+    return (tecla != 13);
+}
 
-    if tiempoT > tiempoE{
-        alert();
+$('#tiempoTrabajado').on('change', gestionTiempo);
+
+function gestionTiempo() {
+     tiempoT = $(this).val();
+     tiempoE = $('#tiempoEstimadoAvance').val();
+
+    if (parseInt(tiempoT) > parseInt(tiempoE)) {
+        alert("El tiempo de trabajo no debe ser mayor al tiempo estimado ");
+        $('#tiempoTrabajado').val("");
+        $('#tiempoRestante').val(tiempoE);
+    } else if (tiempoT <= 0) {
+        alert("El tiempo de trabajo no debe ser menor que 0 ");
+        $('#tiempoTrabajado').val("");
+        $('#tiempoRestante').val(tiempoE);
     } else {
         tiempoR = tiempoE - tiempoT;
         $('#tiempoRestante').val(tiempoR);

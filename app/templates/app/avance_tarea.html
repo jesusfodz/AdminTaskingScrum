@@ -16,14 +16,39 @@
                         <h1 class="h4 text-gray-900 mb-4">¡Registrar Avance!</h1>
                     </div>
 
-                    <form class="user" action="" method="post">
+                    <form class="user" action="{% url 'app:avance' %}" method="post" onkeypress="return anular(event)">
                         {% csrf_token %}
-                        <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}" />
+
+                        <input type="hidden" id="idTareaAvance" name="idTareaAvance" value="{{tarea.id}}" />
                         <div class="form-group">
                             <label for="tarea">Tarea</label>
                             <input type="text" maxlength="45" class="form-control" id="tarea" name="tarea"
                                 value="{{tarea.nombre}}" disabled>
                         </div>
+                        {% for avance in avances %}
+                        <input type="hidden" id="idAvance" name="idAvance" value="{{avance.id}}" />
+
+                        <div class="form-group">
+                            <label for="descripcion">Descripción</label>
+                            <textarea class="form-control" id="descripcion" name="descripcion"
+                                rows="3">{{avance.descripcion}}</textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tiempoTrabajado">Tiempo trabajado</label>
+                            <input type="number" class="form-control" id="tiempoTrabajado" name="tiempoTrabajado"
+                                value="{{avance.tiempoTrabajado}}" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="tiempoRestante">Tiempo restante</label>
+                            <input type="number" class="form-control" id="tiempoRestante" name="tiempoRestante"
+                                value="{{avance.tiempoRestante}}" readonly>
+                        </div>
+                        {% endfor %}
+                        {% if not avances%}
+                        <input type="hidden" id="idAvance" name="idAvance" value="" />
+
                         <div class="form-group">
                             <label for="descripcion">Descripción</label>
                             <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
@@ -32,16 +57,18 @@
                         <div class="form-group">
                             <label for="tiempoTrabajado">Tiempo trabajado</label>
                             <input type="number" class="form-control" id="tiempoTrabajado" name="tiempoTrabajado"
-                                value=0>
+                                required>
                         </div>
 
                         <div class="form-group">
                             <label for="tiempoRestante">Tiempo restante</label>
                             <input type="number" class="form-control" id="tiempoRestante" name="tiempoRestante"
-                                value="{{tarea.tiempoEstimado}}" readonly>
+                                readonly>
                         </div>
-                        <input type="hidden" id="tiempoEstimado" value="{{tarea.tiempoEstimado}}">
 
+                        {% endif %}
+
+                        <input type="hidden" id="tiempoEstimadoAvance" value="{{tarea.tiempoEstimado}}">
                         <button class="btn btn-primary btn-user btn-block" type="submit">Registrar</button>
 
                     </form>
