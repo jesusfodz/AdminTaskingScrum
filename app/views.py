@@ -13,15 +13,30 @@ import json
 @login_required
 def index(request):
 
-    developer=User.objects.get(id=request.user.id)
+    usuario=User.objects.get(id=request.user.id)
 
-    lista_tareas=Tarea.objects.filter( developer_id=developer.id)
+    lista_tareas=Tarea.objects.filter( developer_id=usuario.id)
 
     count=len(lista_tareas)
+    
+    lista_proyectosP=Proyecto.objects.filter( productOwner=usuario)
+
+    lista_developer=Developer.objects.filter(Q(idUser=usuario) & Q(activo='A'))
+
+    lista_proyectosD=Proyecto.objects.filter( id__in=[p.idProyecto_id for p in lista_developer] )
+
+    lista_all_tareas=Tarea.objects.all()
+    print(lista_all_tareas)
+
+    lista_all_developer=Developer.objects.filter(activo='A')
 
     contexto = { 
         'tareas_asignadas': lista_tareas,
-        'count_tareas'  :count    
+        'count_tareas'  :count ,
+        'lista_proyectosP' :lista_proyectosP ,
+        'lista_proyectosD' :lista_proyectosD,
+        'todas_tareas': lista_all_tareas,
+        'todos_developer':lista_all_developer
     }
 
     return render(request, "app/index.html",contexto)  
