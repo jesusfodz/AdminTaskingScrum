@@ -68,8 +68,10 @@
                         <h6 class="collapse-header">Menu Proyecto:</h6>
                         <a class="collapse-item" href="{% url 'app:form_proyecto' %}">Crear proyecto</a>
                         <a class="collapse-item" href="{% url 'app:list_proyectos_creados' %}">Ver proyectos creados</a>
-                        <a class="collapse-item" href="{% url 'app:form_agregar_developer' %}">Agregar developer a un Proyecto</a>                        
-                        <a class="collapse-item" href="{% url 'app:list_developer' %}">Habilitar/Desabilitar Developer</a>
+                        <a class="collapse-item" href="{% url 'app:form_agregar_developer' %}">Agregar developer a un
+                            Proyecto</a>
+                        <a class="collapse-item" href="{% url 'app:list_developer' %}">Habilitar/Desabilitar
+                            Developer</a>
                     </div>
                 </div>
             </li>
@@ -87,7 +89,7 @@
                         <h6 class="collapse-header">Menu Tareas:</h6>
                         <a class="collapse-item" href="{% url 'app:form_tarea' %}">Crear tarea</a>
                         <a class="collapse-item" href="{% url 'app:list_tareas_creadas' %}">Ver tarea creadas</a>
-                        <a class="collapse-item" href="utilities-animation.html">Ver tareas asignadas</a>
+                        <a class="collapse-item" href="{% url 'app:list_tareas_asignadas' %}">Ver tareas asignadas</a>
                     </div>
                 </div>
             </li>
@@ -127,7 +129,7 @@
                         <i class="fa fa-bars"></i>
                     </button>
 
-                       <!-- Topbar Navbar -->
+                    <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
@@ -225,7 +227,8 @@
                                     Cambiar Password
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{% url 'app:view_logout' %}" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Cerrar Sesión
                                 </a>
@@ -292,6 +295,7 @@
         </div>
     </div>
 
+
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'app/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'app/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -309,14 +313,14 @@
     <script src="{% static 'app/js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'app/js/demo/chart-pie-demo.js' %}"></script>
 
-      <!-- Page level plugins -->
-  <script src="{% static 'app/vendor/datatables/jquery.dataTables.min.js' %}"></script>
-  <script src="{% static 'app/vendor/datatables/dataTables.bootstrap4.min.j' %}"></script>
+    <!-- Page level plugins -->
+    <script src="{% static 'app/vendor/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'app/vendor/datatables/dataTables.bootstrap4.min.j' %}"></script>
 
-  <!-- Page level custom scripts -->
-  <script src="{% static 'app/js/demo/datatables-demo.js' %}"></script>
+    <!-- Page level custom scripts -->
+    <script src="{% static 'app/js/demo/datatables-demo.js' %}"></script>
 
-  <script src="{% static 'app/js/utiles.js' %}"></script>
+    <script src="{% static 'app/js/utiles.js' %}"></script>
 
 </body>
 

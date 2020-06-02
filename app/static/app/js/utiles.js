@@ -1,6 +1,19 @@
+function gestionTiempo() {
+    var tiempoT = $('#tiempoTrabajado').val();
+    var tiempoE = $('#tiempoEstimado').val();
 
+    if tiempoT > tiempoE{
+        alert();
+    } else {
+        tiempoR = tiempoE - tiempoT;
+        $('#tiempoRestante').val(tiempoR);
+    }
+}
 
-
+function showEliminarTareaModal(valor) {
+    $('#idTareaEliminar').val(valor);
+    $('#eliminarTareaModal').modal('show')
+}
 
 $('#proyecto').on('change', ajaxDeveloper);
 

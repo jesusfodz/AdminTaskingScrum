@@ -4,7 +4,7 @@
 {% block titulo %}Tareas creadas{% endblock %}
 {% block contenido %}
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-    <h1 class="h3 mb-0 text-gray-800">tareas creadas</h1>
+    <h1 class="h3 mb-0 text-gray-800">Tareas creadas</h1>
 </div>
 
 <div class="container-fluid">
@@ -42,7 +42,7 @@
                         </tr>
                     </tfoot>
                     <tbody>
-                        {% for tarea in lista_tareas %} 
+                        {% for tarea in lista_tareas %}
                         <tr>
                             <td>{{ tarea.nombre }}</td>
                             <td>{{ tarea.descripcion }}</td>
@@ -55,7 +55,8 @@
                                 <form class="user" action="" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}">
-                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i class="fas fa-info-circle"></i>
+                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i
+                                            class="fas fa-info-circle"></i>
                                     </button>
                                 </form>
                             </td>
@@ -63,21 +64,19 @@
                                 <form class="user" action="{% url 'app:form_tarea2' %}" method="post">
                                     {% csrf_token %}
                                     <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}">
-                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i class="fas fa-edit"></i>
+                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i
+                                            class="fas fa-edit"></i>
                                     </button>
                                 </form>
                             </td>
                             <td>
-                                <form class="user" action="" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}">
-                                    <button class="btn btn-danger btn-circle btn-lg" type="submit"><i class="fas fa-trash"></i>
-                                        </button>
-                                </form>
+                                <a class="btn btn-danger btn-circle btn-lg" href="#" onclick="showEliminarTareaModal({{ tarea.id }})">
+                                    <i class="fas fa-trash"></i>
+                                </a>
                             </td>
 
                         </tr>
-                        {% endfor %} 
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
@@ -85,6 +84,35 @@
 
 
 
+    </div>
+</div>
+
+<!-- Eliminar Tarea Modal-->
+<div class="modal fade" id="eliminarTareaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">¿Esta seguro de eliminar
+                    la tarea ?</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Si elimina la tarea tambien elimina todos los avances que estan
+                asociados a ella</div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancelar</button>
+                <!-- <a class="btn btn-primary" href="{% url 'app:view_logout' %}">Eliminar</a> -->
+                <form class="user" action="{% url 'app:tarea_eliminar' %}" method="post">
+                    {% csrf_token %}
+                    <input type="hidden" id="idTareaEliminar" name="idTareaEliminar">
+                    <button class="btn btn-primary" type="submit">Eliminar</button>
+                </form>
+
+            </div>
+        </div>
     </div>
 </div>
 

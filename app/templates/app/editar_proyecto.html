@@ -15,7 +15,7 @@
                         <h1 class="h4 text-gray-900 mb-4">¡Editar proyecto No. {{proyecto.id}}!</h1>
                     </div>
 
-                    <form class="user" action="{% url 'app:proyecto2' %}" method="post">
+                    <form class="user" action="{% url 'app:proyecto_editar' %}" method="post">
                         {% csrf_token %}
 
                         <input type="hidden" id="idProyecto" name="idProyecto" value="{{proyecto.id}}"/>

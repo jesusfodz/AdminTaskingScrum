@@ -153,7 +153,7 @@ def proyecto(request):
     return render(request, "app/proyecto.html",contexto)     
 
 @login_required
-def proyecto2(request):
+def proyecto_editar(request):
 
     idProyecto= request.POST['idProyecto']
     descripcion=request.POST['descripcion']
@@ -282,12 +282,26 @@ def tarea(request):
     productOwner=User.objects.get(id=request.user.id)
     lista_proyectos=Proyecto.objects.filter( productOwner=productOwner)
 
-    estado=Estado.objects.get(nombre='To Do')
+    estadoTD=Estado.objects.filter(nombre='To Do')
 
-    if not estado:
-        estado=Estado()
-        estado.nombre="To Do"
-        estado.save()
+    if not estadoTD:
+        estadoTD=Estado()
+        estadoTD.nombre="To Do"
+        estadoTD.save()
+
+    estadoIP=Estado.objects.filter(nombre='In Progress')
+
+    if not estadoIP:
+        estadoIP=Estado()
+        estadoIP.nombre="In Progress"
+        estadoIP.save()    
+
+    estadoD=Estado.objects.filter(nombre='Done')
+
+    if not estadoD:
+        estadoD=Estado()
+        estadoD.nombre="Done"
+        estadoD.save()      
 
     tarea=Tarea()
     tarea.nombre=nombre
@@ -396,7 +410,7 @@ def form_tarea2(request):
     return render(request, "app/editar_tarea.html",contexto)  
 
 @login_required
-def tarea2(request):
+def tarea_editar(request):
     
     idTarea= request.POST['idTarea']
     descripcion=request.POST['descripcion']
@@ -425,3 +439,53 @@ def tarea2(request):
     tarea.save()
 
     return redirect("app:list_tareas_creadas") 
+
+@login_required
+def tarea_eliminar(request):
+    idTarea= request.POST['idTareaEliminar']
+
+    tarea=Tarea.objects.get(id=int(idTarea))
+    tarea.delete()
+
+    return redirect("app:list_tareas_creadas") 
+
+@login_required
+def list_tareas_asignadas(request):
+
+    developer=User.objects.get(id=request.user.id)
+
+    lista_tareas=Tarea.objects.filter( developer_id=developer.id)
+
+    estados=Estado.objects.all()
+
+    
+    contexto = { 
+        'lista_tareas': lista_tareas, 
+        'estados': estados        
+    } 
+
+    return render(request, "app/tareas_asignadas.html",contexto)
+
+@login_required
+def cambiar_estado(request):
+    idTarea= request.POST['idTareaEstado']
+    estado= request.POST['estado']
+
+    tarea=Tarea.objects.get(id=int(idTarea))
+    tarea.estadoActual=Estado.objects.get(id=estado)
+    tarea.save()
+
+    return redirect("app:list_tareas_asignadas") 
+
+
+@login_required
+def form_avance(request):
+
+    idTarea= request.POST['idTareaAvance']
+    tarea=Tarea.objects.get(id=int(idTarea))
+
+    contexto = { 
+        'tarea': tarea      
+    }
+
+    return render(request, "app/avance_tarea.html",contexto) 
