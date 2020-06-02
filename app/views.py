@@ -459,6 +459,12 @@ def tarea_eliminar(request):
     idTarea= request.POST['idTareaEliminar']
 
     tarea=Tarea.objects.get(id=int(idTarea))
+    avances=Avance.objects.filter(tarea_id=int(tarea.id))
+
+    if avances:
+        for avance in avances:
+            avance.delete()
+
     tarea.delete()
 
     return redirect("app:list_tareas_creadas") 
