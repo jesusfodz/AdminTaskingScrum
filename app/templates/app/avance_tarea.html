@@ -14,6 +14,9 @@
                 <div class="p-5">
                     <div class="text-center">
                         <h1 class="h4 text-gray-900 mb-4">¡Registrar Avance!</h1>
+                        {%if avance.id %}
+                        <h1 class="h4 text-gray-900 mb-4">No. {{avance.id}}</h1>
+                        {%endif%}
                     </div>
 
                     <form class="user" action="{% url 'app:avance' %}" method="post" onkeypress="return anular(event)">
@@ -25,8 +28,11 @@
                             <input type="text" maxlength="45" class="form-control" id="tarea" name="tarea"
                                 value="{{tarea.nombre}}" disabled>
                         </div>
-                        {% for avance in avances %}
+                        {%if avance.id %}
                         <input type="hidden" id="idAvance" name="idAvance" value="{{avance.id}}" />
+                        {%else %}
+                        <input type="hidden" id="idAvance" name="idAvance" value="" />
+                        {%endif%}
 
                         <div class="form-group">
                             <label for="descripcion">Descripción</label>
@@ -45,34 +51,53 @@
                             <input type="number" class="form-control" id="tiempoRestante" name="tiempoRestante"
                                 value="{{avance.tiempoRestante}}" readonly>
                         </div>
-                        {% endfor %}
-                        {% if not avances%}
-                        <input type="hidden" id="idAvance" name="idAvance" value="" />
-
-                        <div class="form-group">
-                            <label for="descripcion">Descripción</label>
-                            <textarea class="form-control" id="descripcion" name="descripcion" rows="3"></textarea>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tiempoTrabajado">Tiempo trabajado</label>
-                            <input type="number" class="form-control" id="tiempoTrabajado" name="tiempoTrabajado"
-                                required>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="tiempoRestante">Tiempo restante</label>
-                            <input type="number" class="form-control" id="tiempoRestante" name="tiempoRestante"
-                                readonly>
-                        </div>
-
-                        {% endif %}
 
                         <input type="hidden" id="tiempoEstimadoAvance" value="{{tarea.tiempoEstimado}}">
                         <button class="btn btn-primary btn-user btn-block" type="submit">Registrar</button>
 
                     </form>
                 </div>
+            </div>
+        </div>
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No.</th>
+                                <th>Descripción</th>
+                                <th>Tiempo Trabajado</th>
+                                <th>Tiempo Restante</th>
+                                <th>Fecha de Creación</th>
+                            </tr>
+                        </thead>
+                        <tfoot>
+                            <tr>
+                                <th>No.</th>
+                                <th>Descripción</th>
+                                <th>Tiempo Trabajado</th>
+                                <th>Tiempo Restante</th>
+                                <th>Fecha de Creación</th>
+                            </tr>
+                        </tfoot>
+                        <tbody>
+                            {% for avance in avances %}
+                            <tr>
+                                <td>
+                                   <a href="{% url 'app:avance_id' avance.id%}">{{ avance.id }}</a> 
+                                    </td>
+                                <td>{{ avance.descripcion }}</td>
+                                <td>{{ avance.tiempoTrabajado }}</td>
+                                <td>{{ avance.tiempoRestante }}</td>
+                                <td>{{ avance.fecha }}</td>
+                                
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
             </div>
         </div>
     </div>

@@ -21,6 +21,7 @@
                             <th>Estado Actual</th>
                             <th>Tiempo Estimado</th>
                             <th>Fecha de Creación</th>
+                            <th>Avances</th>
                             <th>Cambiar Estado</th>
                             <th>Registrar Avances</th>
                         </tr>
@@ -33,6 +34,7 @@
                             <th>Estado Actual</th>
                             <th>Tiempo Estimado</th>
                             <th>Fecha de Creación</th>
+                            <th>Avances</th>
                             <th>Cambiar Estado</th>
                             <th>Registrar Avances</th>
                         </tr>
@@ -47,10 +49,38 @@
                             <td>{{ tarea.tiempoEstimado }}</td>
                             <td>{{ tarea.fechaCreacion }}</td>
                             <td>
-                                <form class="form-inline" action="{% url 'app:cambiar_estado' %}" method="post" id="form_{{tarea.id}}">
+                                <a class="btn btn-primary btn-circle btn-lg" href="#" id="alertsAvaces" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="alertsAvaces">
+                                    <h6 class="dropdown-header">
+                                        Avances
+                                    </h6>
+                                    {% for avance in avances %}
+                                    {% if avance.tarea_id == tarea.id %}
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        href="{% url 'app:form_avance_tarea_id' tarea.id%}">
+                                        <div>
+                                            <div class="small text-gray-500">{{avance.fecha}}</div>
+                                            <span class="font-weight-bold">{{avance.descripcion}}</span><br>
+                                            Developer: <span>{{avance.usuario}}</span><br>
+                                            Tiempo trabajado: <span>{{avance.tiempoTrabajado}}</span><br>
+                                            Tiempo restante: <span>{{avance.tiempoRestante}}</span>
+                                        </div>
+                                    </a>
+                                    {%endif%}
+                                    {% endfor %}
+                                </div>
+                            </td>
+                            <td>
+                                <form class="form-inline" action="{% url 'app:cambiar_estado' %}" method="post"
+                                    id="form_{{tarea.id}}">
                                     {% csrf_token %}
                                     <div class="form-group mb-2">
-                                        <input type="hidden" id="idTareaEstado" name="idTareaEstado" value="{{ tarea.id }}"/>
+                                        <input type="hidden" id="idTareaEstado" name="idTareaEstado"
+                                            value="{{ tarea.id }}" />
                                         <select name="estado" id="estado" class="form-control" required>
                                             {% for e in estados %}
                                             <option value="{{e.id}}" {% if e.id == tarea.estadoActual_id %}
@@ -76,9 +106,6 @@
                 </table>
             </div>
         </div>
-
-
-
     </div>
 </div>
 

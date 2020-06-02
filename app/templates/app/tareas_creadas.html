@@ -52,13 +52,30 @@
                             <td>{{ tarea.tiempoEstimado }}</td>
                             <td>{{ tarea.fechaCreacion }}</td>
                             <td>
-                                <form class="user" action="" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" id="idTarea" name="idTarea" value="{{tarea.id}}">
-                                    <button class="btn btn-primary btn-circle btn-lg" type="submit"><i
-                                            class="fas fa-info-circle"></i>
-                                    </button>
-                                </form>
+                                <a class="btn btn-primary btn-circle btn-lg" href="#" id="alertsAvaces" role="button"
+                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i class="fas fa-info-circle"></i>
+                                </a>
+                                <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                    aria-labelledby="alertsAvaces">
+                                    <h6 class="dropdown-header">
+                                        Avances
+                                    </h6>
+                                    {% for avance in avances %}
+                                    {% if avance.tarea_id == tarea.id %}
+                                    <a class="dropdown-item d-flex align-items-center"
+                                        href="{% url 'app:form_avance_tarea_id' tarea.id%}">
+                                        <div>
+                                            <div class="small text-gray-500">{{avance.fecha}}</div>
+                                            <span class="font-weight-bold">{{avance.descripcion}}</span><br>
+                                            Developer: <span>{{avance.usuario}}</span><br>
+                                            Tiempo trabajado: <span>{{avance.tiempoTrabajado}}</span><br>
+                                            Tiempo restante: <span>{{avance.tiempoRestante}}</span>
+                                        </div>
+                                    </a>
+                                    {%endif%}
+                                    {% endfor %}
+                                </div>
                             </td>
                             <td>
                                 <form class="user" action="{% url 'app:form_tarea2' %}" method="post">
@@ -70,7 +87,8 @@
                                 </form>
                             </td>
                             <td>
-                                <a class="btn btn-danger btn-circle btn-lg" href="#" onclick="showEliminarTareaModal({{ tarea.id }})">
+                                <a class="btn btn-danger btn-circle btn-lg" href="#"
+                                    onclick="showEliminarTareaModal({{ tarea.id }})">
                                     <i class="fas fa-trash"></i>
                                 </a>
                             </td>

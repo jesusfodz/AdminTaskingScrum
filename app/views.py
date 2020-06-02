@@ -12,7 +12,19 @@ import json
 	
 @login_required
 def index(request):
-    return render(request, "app/index.html")  
+
+    developer=User.objects.get(id=request.user.id)
+
+    lista_tareas=Tarea.objects.filter( developer_id=developer.id)
+
+    count=len(lista_tareas)
+
+    contexto = { 
+        'tareas_asignadas': lista_tareas,
+        'count_tareas'  :count    
+    }
+
+    return render(request, "app/index.html",contexto)  
 
 def form_login(request):
     mensaje=""
@@ -381,9 +393,11 @@ def list_tareas_creadas(request):
 
     lista_tareas=Tarea.objects.filter( proyecto__in=[p.id for p in lista_proyectos])
 
-    
+    avances=Avance.objects.all()
+
     contexto = { 
-        'lista_tareas': lista_tareas         
+        'lista_tareas': lista_tareas,
+        'avances':avances         
     } 
 
     return render(request, "app/tareas_creadas.html",contexto)  
@@ -458,10 +472,12 @@ def list_tareas_asignadas(request):
 
     estados=Estado.objects.all()
 
+    avances=Avance.objects.all()
     
     contexto = { 
         'lista_tareas': lista_tareas, 
-        'estados': estados        
+        'estados': estados,
+        'avances':avances        
     } 
 
     return render(request, "app/tareas_asignadas.html",contexto)
@@ -484,14 +500,36 @@ def form_avance(request):
     idTarea= request.POST['idTareaAvance']
     tarea=Tarea.objects.get(id=int(idTarea))
 
-    avance=Avance.objects.filter(tarea_id=int(idTarea))
+    developer=User.objects.get(id=request.user.id)
+
+    avance=Avance()
+    avances=Avance.objects.filter(Q(tarea=tarea) & Q(usuario=developer))
 
     contexto = { 
         'tarea': tarea,
-        'avances':avance       
+        'avance':avance,
+        'avances':avances       
     }
 
     return render(request, "app/avance_tarea.html",contexto) 
+
+@login_required
+def avance_id(request,id):
+    avance=Avance.objects.get(id=id)
+    idTarea= avance.tarea_id
+    tarea=Tarea.objects.get(id=int(idTarea))
+
+    developer=User.objects.get(id=request.user.id)
+   
+    avances=Avance.objects.filter(Q(tarea=tarea) & Q(usuario=developer))
+
+    contexto = { 
+        'tarea': tarea,
+        'avance':avance,
+        'avances':avances       
+    }
+
+    return render(request, "app/avance_tarea.html",contexto)     
 
 @login_required
 def avance(request):
@@ -520,3 +558,21 @@ def avance(request):
     avance.save()
 
     return redirect("app:list_tareas_asignadas")    
+
+@login_required
+def form_avance_tarea_id(request,id):
+
+    tarea=Tarea.objects.get(id=id)
+
+    developer=User.objects.get(id=request.user.id)
+
+    avance=Avance()
+    avances=Avance.objects.filter(Q(tarea=tarea) & Q(usuario=developer))
+
+    contexto = { 
+        'tarea': tarea,
+        'avance':avance,
+        'avances':avances       
+    }
+
+    return render(request, "app/avance_tarea.html",contexto) 

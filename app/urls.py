@@ -29,4 +29,7 @@ urlpatterns = [
     path('cambiar-estado/', views.cambiar_estado, name='cambiar_estado'),
     path('registrar-avance/', views.form_avance, name='form_avance'),
     path('registro-avance/', views.avance, name='avance'),
+    path('avance/<int:id>/', views.avance_id,name='avance_id'),
+    path('registrar-avance-tarea/<int:id>/', views.form_avance_tarea_id, name='form_avance_tarea_id'),
+
 ]
