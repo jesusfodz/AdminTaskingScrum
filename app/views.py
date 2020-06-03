@@ -526,10 +526,18 @@ def form_avance(request):
     avance=Avance()
     avances=Avance.objects.filter(Q(tarea=tarea) & Q(usuario=developer))
 
+    tiempoEstimado=int(tarea.tiempoEstimado)
+
+    avancesAux=Avance.objects.filter(tarea=tarea)
+    if avancesAux:
+        for a in avancesAux:
+            tiempoEstimado=tiempoEstimado-int(a.tiempoRestante)
+
     contexto = { 
         'tarea': tarea,
         'avance':avance,
-        'avances':avances       
+        'avances':avances,
+        'tiempoEstimado':tiempoEstimado       
     }
 
     return render(request, "app/avance_tarea.html",contexto) 
@@ -544,10 +552,18 @@ def avance_id(request,id):
    
     avances=Avance.objects.filter(Q(tarea=tarea) & Q(usuario=developer))
 
+    tiempoEstimado=int(tarea.tiempoEstimado)
+
+    avancesAux=Avance.objects.filter(tarea=tarea)
+    if avancesAux:
+        for a in avancesAux:
+            tiempoEstimado=tiempoEstimado-int(a.tiempoRestante)
+
     contexto = { 
         'tarea': tarea,
         'avance':avance,
-        'avances':avances       
+        'avances':avances,
+        'tiempoEstimado':tiempoEstimado       
     }
 
     return render(request, "app/avance_tarea.html",contexto)     
