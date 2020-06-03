@@ -552,12 +552,12 @@ def avance_id(request,id):
    
     avances=Avance.objects.filter(Q(tarea=tarea) & Q(usuario=developer))
 
-    tiempoEstimado=int(tarea.tiempoEstimado)
+    tiempoEstimado=int(avance.tiempoRestante)
 
-    avancesAux=Avance.objects.filter(tarea=tarea)
-    if avancesAux:
-        for a in avancesAux:
-            tiempoEstimado=tiempoEstimado-int(a.tiempoRestante)
+    # avancesAux=Avance.objects.filter(tarea=tarea)
+    # if avancesAux:
+    #     for a in avancesAux:
+    #         tiempoEstimado=tiempoEstimado-int(a.tiempoRestante)
 
     contexto = { 
         'tarea': tarea,
